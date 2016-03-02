@@ -3,7 +3,7 @@ Add `"EasySyntax"` section to your `.sublime-project` file:
 ```JSON
 {
     "EasySyntax": {
-        "Javascript ES6.sublime-syntax": ["js"]
+        "Javascript ES6": ["js"]
     }
 }
 ```

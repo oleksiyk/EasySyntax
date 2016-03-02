@@ -22,7 +22,7 @@ class EasySyntax(sublime_plugin.EventListener):
             if ext in settings[syntax]:
                 # print("Applying", syntax)
                 view.settings().set("easy_syntax_applied", True)
-                view.set_syntax_file(syntax)
+                view.set_syntax_file(syntax + ".sublime-syntax")
                 break
 
 
