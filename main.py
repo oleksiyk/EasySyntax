@@ -1,4 +1,4 @@
-import sublime, sublime_plugin, os, time
+import sublime, sublime_plugin, os, time, re
 
 gsettings = {}
 
@@ -7,7 +7,7 @@ def plugin_loaded():
     gsettings = sublime.load_settings("EasySyntax.sublime-settings")
 
 class EasySyntax(sublime_plugin.EventListener):
-    def on_load_async(self, view):
+    def on_load(self, view):
         self.set_syntax(view)
 
     def set_syntax(self, view):
@@ -16,16 +16,7 @@ class EasySyntax(sublime_plugin.EventListener):
 
         view.settings().set("easy_syntax_applied", True)
 
-        psettings = sublime.active_window().project_data().get("EasySyntax")
-
-        if not psettings:
-            return
-
-        psettings = psettings.get("map")
-
-        if not psettings:
-            return
-
+        psettings = sublime.active_window().project_data().get("EasySyntax", {}).get("map", {})
         settings = gsettings.get("map", {})
         settings.update(psettings)
 
@@ -33,20 +24,22 @@ class EasySyntax(sublime_plugin.EventListener):
 
         filename = view.file_name()
 
-        if not filename:
-            return
-
         ext = os.path.splitext(filename)[1].lstrip('.')
         # print("extension", ext)
         for syntax in settings:
-            if ext in settings[syntax]:
-                # print("Applying", syntax)
-                try:
-                    sublime.load_resource(syntax)
-                except Exception:
-                    print("Syntax file not found", syntax)
-                view.set_syntax_file(syntax)
-                break
+            if ext in settings[syntax].get("extensions", []):
+                return self.apply_syntax(syntax, view)
+            for pattern in settings[syntax].get("patterns", []):
+                if re.search(pattern, filename):
+                    return self.apply_syntax(syntax, view)
+
+    def apply_syntax(self, syntax, view):
+        # print("Applying", syntax)
+        try:
+            sublime.load_resource(syntax)
+        except Exception:
+            print("Syntax file not found", syntax)
+        view.set_syntax_file(syntax)
 
 
 
