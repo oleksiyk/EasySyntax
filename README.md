@@ -3,7 +3,10 @@ Add `"EasySyntax"` section to your `.sublime-project` file:
 ```JSON
 {
     "EasySyntax": {
-        "Javascript ES6": ["js"]
+        "map": {
+            "Javascript ES6.sublime-syntax": ["js"],
+            "GenericConfig.tmLanguage": ["conf", "cnf"]
+        }
     }
 }
 ```

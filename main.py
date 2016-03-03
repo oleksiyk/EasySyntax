@@ -1,12 +1,29 @@
 import sublime, sublime_plugin, os, time
 
+gsettings = {}
+
+def plugin_loaded():
+    global gsettings
+    gsettings = sublime.load_settings("EasySyntax.sublime-settings")
+
 class EasySyntax(sublime_plugin.EventListener):
 
     def on_load_async(self, view):
-        settings = sublime.active_window().project_data().get("EasySyntax");
 
-        if not settings:
+        psettings = sublime.active_window().project_data().get("EasySyntax")
+
+        if not psettings:
             return
+
+        psettings = psettings.get("map")
+
+        if not psettings:
+            return
+
+        settings = gsettings.get("map", {})
+        settings.update(psettings)
+
+        print(settings)
 
         if view.settings().get("easy_syntax_applied"):
             return
@@ -22,7 +39,7 @@ class EasySyntax(sublime_plugin.EventListener):
             if ext in settings[syntax]:
                 # print("Applying", syntax)
                 view.settings().set("easy_syntax_applied", True)
-                view.set_syntax_file(syntax + ".sublime-syntax")
+                view.set_syntax_file(syntax)
                 break
 
 
