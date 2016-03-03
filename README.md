@@ -4,8 +4,8 @@ Add `"EasySyntax"` section to your `.sublime-project` file:
 {
     "EasySyntax": {
         "map": {
-            "Javascript ES6.sublime-syntax": ["js"],
-            "GenericConfig.tmLanguage": ["conf", "cnf"]
+            "Packages/Javascript ES6/Javascript ES6.sublime-syntax": ["js"],
+            "Packages/Generic Config/GenericConfig.tmLanguage": ["conf", "cnf"]
         }
     }
 }

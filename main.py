@@ -7,8 +7,14 @@ def plugin_loaded():
     gsettings = sublime.load_settings("EasySyntax.sublime-settings")
 
 class EasySyntax(sublime_plugin.EventListener):
-
     def on_load_async(self, view):
+        self.set_syntax(view)
+
+    def set_syntax(self, view):
+        if view.settings().get("easy_syntax_applied"):
+            return
+
+        view.settings().set("easy_syntax_applied", True)
 
         psettings = sublime.active_window().project_data().get("EasySyntax")
 
@@ -25,9 +31,6 @@ class EasySyntax(sublime_plugin.EventListener):
 
         # print(settings)
 
-        if view.settings().get("easy_syntax_applied"):
-            return
-
         filename = view.file_name()
 
         if not filename:
@@ -38,7 +41,10 @@ class EasySyntax(sublime_plugin.EventListener):
         for syntax in settings:
             if ext in settings[syntax]:
                 # print("Applying", syntax)
-                view.settings().set("easy_syntax_applied", True)
+                try:
+                    sublime.load_resource(syntax)
+                except Exception:
+                    print("Syntax file not found", syntax)
                 view.set_syntax_file(syntax)
                 break
 

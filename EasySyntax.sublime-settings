@@ -1,5 +1,5 @@
 {
   "map":{
-    "GenericConfig.tmLanguage": ["conf", "cnf"]
+    "Packages/Generic Config/GenericConfig.tmLanguage": ["conf", "cnf"]
   }
 }
