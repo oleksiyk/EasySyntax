@@ -23,7 +23,7 @@ class EasySyntax(sublime_plugin.EventListener):
         settings = gsettings.get("map", {})
         settings.update(psettings)
 
-        print(settings)
+        # print(settings)
 
         if view.settings().get("easy_syntax_applied"):
             return
